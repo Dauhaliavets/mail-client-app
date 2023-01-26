@@ -18,8 +18,8 @@ export const SignIn = ({ socket }: { socket: Socket }) => {
   }
 
   return (
-    <Form className='w-75' onSubmit={handleSubmit}>
-      <Form.Group className='mb-3'>
+    <Form className='w-75 d-flex justify-content-around align-items-center' onSubmit={handleSubmit}>
+      <Form.Group className='w-75'>
         <Form.Control
           type='text'
           value={userName}
