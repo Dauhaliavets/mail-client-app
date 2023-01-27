@@ -16,9 +16,11 @@ export const MessageForm = ({ socket }: { socket: Socket }) => {
   }, [socket])
 
   const handleChangeRecipient = (event: ChangeEvent<HTMLInputElement>) => {
-    setRecipient(event.target.value.trim())
+    const value = event.target.value
 
-    socket.emit('selectUser', { partName: recipient })
+    setRecipient(value)
+
+    socket.emit('selectUser', { partName: value })
   }
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
@@ -38,7 +40,9 @@ export const MessageForm = ({ socket }: { socket: Socket }) => {
       }
 
       socket.emit('message', { newMail })
-      event.currentTarget.reset()
+
+      setTitle('')
+      setBody('')
     }
   }
 
