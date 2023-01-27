@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
 import { Badge } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
 import { Context } from '../../context/context'
 import { MessageForm } from '../messageForm/MessageForm'
@@ -8,11 +7,8 @@ import { Messages } from '../messages/Messages'
 
 export const Home = ({ socket }: { socket: Socket }) => {
   const { user, setUser } = useContext(Context)
-  const navigate = useNavigate()
 
   useEffect(() => {
-    socket.on('signInResponse', (data) => setUser(data))
-
     socket.on('messageResponse', (data) => {
       if (user) {
         const newMails = [...user.mails, data]
@@ -20,13 +16,6 @@ export const Home = ({ socket }: { socket: Socket }) => {
       }
     })
   }, [socket, user])
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (!user) navigate('/')
-    }, 300)
-    return () => clearTimeout(timeoutId)
-  }, [user])
 
   return (
     <>

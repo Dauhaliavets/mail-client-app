@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { BASE_URL } from '../constants/baseUrl'
 import { Context } from '../context/context'
@@ -25,7 +25,10 @@ function App() {
         <Container className='px-2 d-flex flex-column justify-content-center align-items-center'>
           <Routes>
             <Route path='/' element={<SignIn socket={socket} />}></Route>
-            <Route path='/home' element={<Home socket={socket} />}></Route>
+            <Route
+              path='/home'
+              element={user ? <Home socket={socket} /> : <Navigate to='/' />}
+            ></Route>
           </Routes>
         </Container>
       </Context.Provider>

@@ -1,10 +1,12 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
+import { Context } from '../../context/context'
 
 export const SignIn = ({ socket }: { socket: Socket }) => {
   const [userName, setUserName] = useState<string>('')
+  const { setUser } = useContext(Context)
   const navigate = useNavigate()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -14,8 +16,14 @@ export const SignIn = ({ socket }: { socket: Socket }) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     socket.emit('signIn', { userName })
-    navigate('/home')
   }
+
+  useEffect(() => {
+    socket.on('signInResponse', (data) => {
+      setUser(data)
+      navigate('/home')
+    })
+  }, [])
 
   return (
     <Form className='w-75 d-flex justify-content-around align-items-center' onSubmit={handleSubmit}>
